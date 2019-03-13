@@ -54,8 +54,6 @@ from pydictchecker.py_dict_checker import PyDictChecker
 PyDictChecker.check(music_library, [
     {
         'path': 'artists->:last:->albums->:first:->name',
-        'end': True,
-
         'comparator': '!=',
         'comparative_value': '',
         'cast_to': None
@@ -78,20 +76,15 @@ from pydictchecker.py_dict_checker import PyDictChecker
 PyDictChecker.check(music_library, [
             {
                 'path': 'artists->:first:',
-                'end': False,
                 'conditions': [
                     {
                         'path': 'real_name->lastname',
-                        'end': True,
-
                         'comparator': '==',
                         'comparative_value': 'Smet',
                         'cast_to': None
                     },
                     {
                         'path': 'albums->:pos:2->year',
-                        'end': True,
-
                         'comparator': '>',
                         'comparative_value': 1960,
                         'cast_to': ':int:'

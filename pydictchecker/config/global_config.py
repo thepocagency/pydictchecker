@@ -6,7 +6,6 @@ __version__: str = "0.0.1"
 __default_path_delimiter__ = '->'
 
 __key_conditions__ = 'conditions'
-__key_end__ = 'end'
 __key_path__ = 'path'
 
 __key_comparator__ = 'comparator'

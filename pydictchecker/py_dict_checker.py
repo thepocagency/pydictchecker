@@ -98,26 +98,20 @@ class PyDictChecker:
             if global_config.__key_path__ not in _current_condition:
                 raise Exception("{} has to be defined".format(global_config.__key_path__))
 
-            if global_config.__key_end__ not in _current_condition:
-                raise Exception("{} has to be defined".format(global_config.__key_end__))
-            else:
-                if type(_current_condition[global_config.__key_end__]) is not bool:
-                    raise Exception("{} has to be True or False".format(global_config.__key_end__))
+            # Means: with a tuple (comparator + comparative_value + cast_to)
+            is_terminal_node = (global_config.__key_conditions__ not in _current_condition
+                                and global_config.__key_comparator__ in _current_condition
+                                and global_config.__key_comparative_value__ in _current_condition
+                                and global_config.__key_cast_to__ in _current_condition)
 
-            # If it's not a terminal node, 'condition' must be defined
-            if not _current_condition[global_config.__key_end__] and global_config.__key_conditions__ not in _current_condition:
-                raise Exception("{} has to be defined if it is not a 'end'-type".format(global_config.__key_conditions__))
+            # Means: with a sub-conditions array
+            is_middle_node = (global_config.__key_conditions__ in _current_condition
+                                and global_config.__key_comparator__ not in _current_condition
+                                and global_config.__key_comparative_value__ not in _current_condition
+                                and global_config.__key_cast_to__ not in _current_condition)
 
-            # If it's a terminal node, 'comparator' + 'comparative_value' + 'cast_to' must be defined
-            if (_current_condition[global_config.__key_end__]
-                    and global_config.__key_comparator__ not in _current_condition
-                    and global_config.__key_comparative_value__ not in _current_condition
-                    and global_config.__key_cast_to__ not in _current_condition):
-                raise Exception("{}, {} and {} has to be defined if it is an 'end'-type".format(
-                    global_config.__key_comparator__,
-                    global_config.__key_comparative_value__,
-                    global_config.__key_cast_to__)
-                )
+            if not is_terminal_node and not is_middle_node:
+                raise Exception("One of the condition is not valid: it has to contain a (sub)-condition array or a tuple (comparator+comparative_value+cast_to)")
 
             _path_string = _current_condition[global_config.__key_path__]
             _current_sub_node = PyDictChecker._get_sub_node(_current_dict, _path_string)
@@ -125,9 +119,7 @@ class PyDictChecker:
             if _current_sub_node is None:
                 return False
 
-            is_end = _current_condition[global_config.__key_end__]
-
-            if is_end:
+            if is_terminal_node:
                 _comparator = _current_condition[global_config.__key_comparator__]
                 _comparative_value = _current_condition[global_config.__key_comparative_value__]
                 _cast_to = _current_condition[global_config.__key_cast_to__]

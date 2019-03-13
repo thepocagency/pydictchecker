@@ -130,12 +130,25 @@ class PyDictCheckerTest(unittest.TestCase):
             ]
         }
 
+        try:
+            PyDictChecker.check(music_library, [
+                {
+                    config.__key_path__: 'artists->:last:->albums->:first:->name',
+
+                    config.__key_conditions__: [],
+
+                    config.__key_comparator__: '!=',
+                    config.__key_comparative_value__: '',
+                    config.__key_cast_to__: None
+                }
+            ])
+        except Exception:
+            self.assertTrue(True, 'Exception is expected because a condition can not be final and contains sub-conditions array')
+
         # We want to check if the last artist has at one album
         self.assertTrue(PyDictChecker.check(music_library, [
             {
                 config.__key_path__: 'artists->:last:->albums->:first:->name',
-                config.__key_end__: True,
-
                 config.__key_comparator__: '!=',
                 config.__key_comparative_value__: '',
                 config.__key_cast_to__: None
@@ -149,21 +162,15 @@ class PyDictCheckerTest(unittest.TestCase):
         self.assertTrue(PyDictChecker.check(music_library, [
             {
                 config.__key_path__: 'artists->:first:',
-                config.__key_end__: False,
-
                 config.__key_conditions__: [
                     {
                         config.__key_path__: 'real_name->lastname',
-                        config.__key_end__: True,
-
                         config.__key_comparator__: '==',
                         config.__key_comparative_value__: 'Smet',
                         config.__key_cast_to__: None
                     },
                     {
                         config.__key_path__: 'albums->:pos:2->year',
-                        config.__key_end__: True,
-
                         config.__key_comparator__: '>',
                         config.__key_comparative_value__: 1960,
                         config.__key_cast_to__: config.__key_cast_to_int__
@@ -179,21 +186,15 @@ class PyDictCheckerTest(unittest.TestCase):
         self.assertFalse(PyDictChecker.check(music_library, [
             {
                 config.__key_path__: 'artists->:first:',
-                config.__key_end__: False,
-
                 config.__key_conditions__: [
                     {
                         config.__key_path__: 'real_name->lastname',
-                        config.__key_end__: True,
-
                         config.__key_comparator__: '==',
                         config.__key_comparative_value__: 'Smet',
                         config.__key_cast_to__: None
                     },
                     {
                         config.__key_path__: 'albums->:last:->year',
-                        config.__key_end__: True,
-
                         config.__key_comparator__: '<',
                         config.__key_comparative_value__: 1960,
                         config.__key_cast_to__: config.__key_cast_to_int__
