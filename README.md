@@ -53,10 +53,8 @@ from pydictchecker.py_dict_checker import PyDictChecker
 
 PyDictChecker.check(music_library, [
     {
-        'path': 'artists->:last:->albums->:first:->name',
-        'comparator': '!=',
-        'comparative_value': '',
-        'cast_to': None
+        'path': 'artists->:last:->albums->:first:',
+        'conditions': []
     }
 ])
 ```

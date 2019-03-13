@@ -148,10 +148,8 @@ class PyDictCheckerTest(unittest.TestCase):
         # We want to check if the last artist has at one album
         self.assertTrue(PyDictChecker.check(music_library, [
             {
-                config.__key_path__: 'artists->:last:->albums->:first:->name',
-                config.__key_comparator__: '!=',
-                config.__key_comparative_value__: '',
-                config.__key_cast_to__: None
+                config.__key_path__: 'artists->:last:->albums->:first:',
+                config.__key_conditions__: []
             }
         ]))
 
