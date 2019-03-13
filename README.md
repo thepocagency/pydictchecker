@@ -113,3 +113,7 @@ And these are the first operators:
 ```
  $ python -m unittest discover -v -s . -p "*_test.py"
 ```
+
+## Credits
+
+Developed by Alexandre Veremme @ [The POC Agency](https://www.the-poc-agency.com) (cf. [www.the-poc-agency.com](https://www.the-poc-agency.com))
