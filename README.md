@@ -79,8 +79,7 @@ PyDictChecker.check(music_library, [
             {
                 'path': 'artists->:first:',
                 'end': False,
-
-                config.__key_conditions__: [
+                'conditions': [
                     {
                         'path': 'real_name->lastname',
                         'end': True,
