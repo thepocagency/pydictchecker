@@ -106,10 +106,20 @@ And these are the first operators:
     - ```:last:```, 
     - ```:pos:X``` (where X is the position of the element you want to move to)    
 
-## To run the unit tests
+## Main commands
+
+### Test
 
 ```
  $ python -m unittest discover -v -s . -p "*_test.py"
+```
+
+### Build
+
+To create a build version in the "_dist_" directory
+
+```
+ $ python setup.py sdist
 ```
 
 ## Credits
