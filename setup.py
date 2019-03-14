@@ -7,7 +7,7 @@ from setuptools import setup
 
 
 setup(
-    name="PyDictChecker",
+    name="pydictchecker",
     version=__version__,
     description=(
         "PyDictChecker is a generic Python3 tool to run recursively through a dictionary and validate any kind of conditions in a given dictionary."
