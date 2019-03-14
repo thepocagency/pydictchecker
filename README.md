@@ -1,5 +1,16 @@
 # PyDictChecker
 
+## Table of content
+
+1. [ What is PyDictChecker? ](#what-is-pydictchecker)
+1. [ Examples ](#examples)
+1. [ Default comparators / cast-operators ](#default-comparators--cast-operators)
+1. [ Main commands ](#main-commands)
+    1. [ Test ](#test)
+    1. [ Build ](#build)
+    1. [ Import PyDictChecker into your project ](#import-pydictchecker-into-your-project)
+1. [ Credits ](#credits)
+
 ## What is PyDictChecker?
 
 PyDictChecker is a generic Python3 tool to run recursively through a dictionary and validate any kind of conditions in a given dictionary.
