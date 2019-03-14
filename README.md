@@ -60,15 +60,16 @@ music_library = {
 If you want to verify if the last artist has at least one album:
 
 ```
-from pydictchecker.py_dict_checker import PyDictChecker
-
-PyDictChecker.check(music_library, [
+_is_valid, _output_value = PyDictChecker.check(music_library, [
     {
-        'path': 'artists->:last:->albums->:first:',
-        'conditions': []
+        'path': 'artists->:last:->albums->:first:'
     }
 ])
 ```
+
+NB: 
+- ''_is_valid_'' is valid in this case because the node exists
+- ''_output_value_'' is the first album in this case  
 
 ### Ex. 2
 
@@ -80,30 +81,31 @@ If you want to check if:
 You can run the next method: 
 
 ```
-from pydictchecker.py_dict_checker import PyDictChecker
-
-PyDictChecker.check(music_library, [
+_is_valid, _output_value = PyDictChecker.check(music_library, [
+    {
+        'path': 'artists->:first:',
+        'conditions': [
             {
-                'path': 'artists->:first:',
-                'conditions': [
-                    {
-                        'path': 'real_name->lastname',
-                        'comparator': '==',
-                        'comparative_value': 'Smet',
-                        'cast_to': None
-                    },
-                    {
-                        'path': 'albums->:pos:2->year',
-                        'comparator': '>',
-                        'comparative_value': 1960,
-                        'cast_to': ':int:'
-                    }
-                ]
+                'path': 'real_name->lastname',
+                'comparator': '==',
+                'comparative_value': 'Smet',
+                'cast_to': None,
+                'output': True
+            },
+            {
+                'path': 'albums->:pos:2->year',
+                'comparator': '>',
+                'comparative_value': 1960,
+                'cast_to': ':int:'
             }
-        ])
+        ]
+    }
+])
 ```
 
-_NB: please note that we use relative path in this case._
+NB: 
+- please note that we use relative path in this case.
+- the condition is valid and we get the value 'Smet' in ''_\_output_value_''
 
 ### More
 

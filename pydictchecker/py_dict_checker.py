@@ -85,41 +85,34 @@ class PyDictChecker:
 
     @staticmethod
     def _get_sub_node(_current_dict={}, _path_str=''):
-        path_list = PyDictChecker._split(_path_str)
-        return PyDictChecker._get_sub_dict_by_path_list(_current_dict, path_list)
+        return PyDictChecker._get_sub_dict_by_path_list(_current_dict, PyDictChecker._split(_path_str))
 
     @staticmethod
-    def check(_current_dict={}, _conditions=[]):
-
-        _is_valid = True
+    def check(_current_dict={}, _conditions=[], _is_valid=True, _output_value=None):
 
         for _current_condition in _conditions:
 
             if global_config.__key_path__ not in _current_condition:
                 raise Exception("{} has to be defined".format(global_config.__key_path__))
 
-            # Means: with a tuple (comparator + comparative_value + cast_to)
-            is_terminal_node = (global_config.__key_conditions__ not in _current_condition
-                                and global_config.__key_comparator__ in _current_condition
-                                and global_config.__key_comparative_value__ in _current_condition
-                                and global_config.__key_cast_to__ in _current_condition)
-
-            # Means: with a sub-conditions array
-            is_middle_node = (global_config.__key_conditions__ in _current_condition
-                                and global_config.__key_comparator__ not in _current_condition
-                                and global_config.__key_comparative_value__ not in _current_condition
-                                and global_config.__key_cast_to__ not in _current_condition)
-
-            if not is_terminal_node and not is_middle_node:
-                raise Exception("One of the condition is not valid: it has to contain a (sub)-condition array or a tuple (comparator+comparative_value+cast_to)")
-
             _path_string = _current_condition[global_config.__key_path__]
             _current_sub_node = PyDictChecker._get_sub_node(_current_dict, _path_string)
 
             if _current_sub_node is None:
-                return False
+                return False, None
 
-            if is_terminal_node:
+            # Set the final output if there is no output defined yet or if the user asks for it
+            if ((global_config.__key_output__ in _current_condition
+                 and _current_condition[global_config.__key_output__] is True)
+                    or _output_value is None):
+                _output_value = _current_sub_node
+
+            # If it is a node with condition
+            if (global_config.__key_conditions__ not in _current_condition
+                    and global_config.__key_comparator__ in _current_condition
+                    and global_config.__key_comparative_value__ in _current_condition
+                    and global_config.__key_cast_to__ in _current_condition):
+
                 _comparator = _current_condition[global_config.__key_comparator__]
                 _comparative_value = _current_condition[global_config.__key_comparative_value__]
                 _cast_to = _current_condition[global_config.__key_cast_to__]
@@ -128,8 +121,16 @@ class PyDictChecker:
                                                                     _comparator,
                                                                     _comparative_value,
                                                                     _cast_to))
-            else:
-                _sub_conditions = _current_condition[global_config.__key_conditions__]
-                _is_valid = (_is_valid and PyDictChecker.check(_current_sub_node, _sub_conditions))
 
-        return _is_valid
+            # If there are some sub-conditions to run
+            if global_config.__key_conditions__ in _current_condition:
+
+                _sub_conditions = _current_condition[global_config.__key_conditions__]
+
+                _is_sub_condition_valid, _output_value = PyDictChecker.check(_current_sub_node,
+                                                                             _sub_conditions,
+                                                                             _is_valid,
+                                                                             _output_value)
+                _is_valid = (_is_valid and _is_sub_condition_valid)
+
+        return _is_valid, _output_value

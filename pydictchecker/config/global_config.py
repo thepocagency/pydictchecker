@@ -7,6 +7,7 @@ __default_path_delimiter__ = '->'
 
 __key_conditions__ = 'conditions'
 __key_path__ = 'path'
+__key_output__ = 'output'
 
 __key_comparator__ = 'comparator'
 __key_comparative_value__ = 'comparative_value'

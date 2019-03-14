@@ -130,34 +130,21 @@ class PyDictCheckerTest(unittest.TestCase):
             ]
         }
 
-        try:
-            PyDictChecker.check(music_library, [
-                {
-                    config.__key_path__: 'artists->:last:->albums->:first:->name',
-
-                    config.__key_conditions__: [],
-
-                    config.__key_comparator__: '!=',
-                    config.__key_comparative_value__: '',
-                    config.__key_cast_to__: None
-                }
-            ])
-        except Exception:
-            self.assertTrue(True, 'Exception is expected because a condition can not be final and contains sub-conditions array')
-
         # We want to check if the last artist has at one album
-        self.assertTrue(PyDictChecker.check(music_library, [
+        _is_valid, _output_value = PyDictChecker.check(music_library, [
             {
-                config.__key_path__: 'artists->:last:->albums->:first:',
-                config.__key_conditions__: []
+                config.__key_path__: 'artists->:last:->albums->:first:'
             }
-        ]))
+        ])
+
+        self.assertTrue(_is_valid)
+        self.assertIsNotNone(_output_value)
 
         # If you want to check if:
         # - the first artist exists;
         # - and his real lastname is 'Smet';
         # - and his third album was published after 1960.
-        self.assertTrue(PyDictChecker.check(music_library, [
+        _is_valid, _output_value = PyDictChecker.check(music_library, [
             {
                 config.__key_path__: 'artists->:first:',
                 config.__key_conditions__: [
@@ -165,7 +152,8 @@ class PyDictCheckerTest(unittest.TestCase):
                         config.__key_path__: 'real_name->lastname',
                         config.__key_comparator__: '==',
                         config.__key_comparative_value__: 'Smet',
-                        config.__key_cast_to__: None
+                        config.__key_cast_to__: None,
+                        config.__key_output__: True
                     },
                     {
                         config.__key_path__: 'albums->:pos:2->year',
@@ -175,13 +163,16 @@ class PyDictCheckerTest(unittest.TestCase):
                     }
                 ]
             }
-        ]))
+        ])
+
+        self.assertTrue(_is_valid)
+        self.assertEqual(_output_value, 'Smet')
 
         # We want to get a false validation:
         # 1. the first artist
         # 2. if his real lastname is 'Smet'
         # 3. and his LAST album was published BEFORE 1960
-        self.assertFalse(PyDictChecker.check(music_library, [
+        _is_valid, _output_value = PyDictChecker.check(music_library, [
             {
                 config.__key_path__: 'artists->:first:',
                 config.__key_conditions__: [
@@ -195,11 +186,15 @@ class PyDictCheckerTest(unittest.TestCase):
                         config.__key_path__: 'albums->:last:->year',
                         config.__key_comparator__: '<',
                         config.__key_comparative_value__: 1960,
-                        config.__key_cast_to__: config.__key_cast_to_int__
+                        config.__key_cast_to__: config.__key_cast_to_int__,
+                        config.__key_output__: True
                     }
                 ]
             }
-        ]))
+        ])
+
+        self.assertFalse(_is_valid)
+        self.assertEqual(_output_value, 1962)
 
 if __name__ == '__main__':
     unittest.main()
