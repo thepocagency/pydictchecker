@@ -1,6 +1,6 @@
 import operator
 
-__version__: str = "0.0.1"
+__version__ = "0.0.1"
 
 
 __default_path_delimiter__ = '->'
