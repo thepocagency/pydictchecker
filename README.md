@@ -122,6 +122,16 @@ To create a build version in the "_dist_" directory
  $ python setup.py sdist
 ```
 
+### Import PyDictChecker into your project
+
+This project is not listed on Pypi but you can import it from Github:
+
+```
+ $ . venv/bin/activate
+ $ pip install -e git+https://github.com/thepocagency/pydictchecker.git#egg=pydictchecker
+ $ pip freeze > requirements.txt
+```
+
 ## Credits
 
 Developed by Alexandre Veremme @ [The POC Agency](https://www.the-poc-agency.com) (cf. [www.the-poc-agency.com](https://www.the-poc-agency.com))
