@@ -17,7 +17,7 @@ setup(
     author="Alexandre Veremme @ The POC Agency",
     author_email="alex@the-poc-agency.com",
     url="https://github.com/thepocagency/pydictchecker",
-    download_url="https://github.com/thepocagency/pydictchecker",
+    download_url="https://github.com/thepocagency/pydictchecker/tree/master/dist",
     license="LICENSE",
     packages=["pydictchecker", "pydictchecker.config"],
     zip_safe=False
