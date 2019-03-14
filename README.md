@@ -105,6 +105,10 @@ PyDictChecker.check(music_library, [
 
 _NB: please note that we use relative path in this case._
 
+### More
+
+See / run this test file [ py_dict_checker_test.py ](https://github.com/thepocagency/pydictchecker/blob/master/test/py_dict_checker_test.py) for more details.
+
 ## Default comparators / cast-operators
 
 So far, there are only these next comparators: ```'>'```, ```'<'```, ```'>='```, ```'<='```, ```'=='```, ```'!='```.
