@@ -68,8 +68,8 @@ _is_valid, _output_value = PyDictChecker.check(music_library, [
 ```
 
 NB: 
-- ''_is_valid_'' is valid in this case because the node exists
-- ''_output_value_'' is the first album in this case  
+- ''_\_is_valid_'' is valid in this case because the node exists
+- ''_\_output_value_'' is the first album in this case  
 
 ### Ex. 2
 
@@ -105,7 +105,7 @@ _is_valid, _output_value = PyDictChecker.check(music_library, [
 
 NB: 
 - please note that we use relative path in this case.
-- the condition is valid and we get the value 'Smet' in ''_\_output_value_''
+- the boolean ''_\_is_valid_'' is valid and we get the value 'Smet' in ''_\_output_value_''
 
 ### More
 
