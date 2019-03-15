@@ -57,19 +57,17 @@ music_library = {
 
 ### Ex. 1
 
-If you want to verify if the last artist has at least one album:
+If you want to check if the last artist has at least one album:
 
 ```
-_is_valid, _output_value = PyDictChecker.check(music_library, [
-    {
-        'path': 'artists->:last:->albums->:first:'
-    }
-])
+output = PyDictChecker.check(music_library, {
+    'path': 'artists->:last:->albums->:first:'
+})
 ```
 
 NB: 
-- ''_\_is_valid_'' is valid in this case because the node exists
-- ''_\_output_value_'' is the first album in this case  
+- output['\_is\_valid'] is valid in this case because the node exists
+- output['result'] is the first album in this case  
 
 ### Ex. 2
 
@@ -81,31 +79,29 @@ If you want to check if:
 You can run the next method: 
 
 ```
-_is_valid, _output_value = PyDictChecker.check(music_library, [
-    {
-        'path': 'artists->:first:',
-        'conditions': [
-            {
-                'path': 'real_name->lastname',
-                'comparator': '==',
-                'comparative_value': 'Smet',
-                'cast_to': None,
-                'output': True
-            },
-            {
-                'path': 'albums->:pos:2->year',
-                'comparator': '>',
-                'comparative_value': 1960,
-                'cast_to': ':int:'
-            }
-        ]
-    }
-])
+output = PyDictChecker.check(music_library, {
+    'path': 'artists->:first:',
+    'conditions': [
+        {
+            'path': 'real_name->lastname',
+            'comparator': '==',
+            'comparative_value': 'Smet',
+            'cast_to': None,
+            'output': True
+        },
+        {
+            'path': 'albums->:pos:2->year',
+            'comparator': '>',
+            'comparative_value': 1960,
+            'cast_to': ':int:'
+        }
+    ]
+})
 ```
 
 NB: 
 - please note that we use relative path in this case.
-- the boolean ''_\_is_valid_'' is valid and we get the value 'Smet' in ''_\_output_value_''
+- the boolean output['\_is\_valid'] is True and we get the value 'Smet' in output['result']
 
 ### More
 

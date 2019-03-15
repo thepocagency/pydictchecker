@@ -1,9 +1,11 @@
 import operator
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 
 __default_path_delimiter__ = '->'
+__default_result_is_valid__ = 'is_valid'
+__default_result_output__ = 'result'
 
 __key_conditions__ = 'conditions'
 __key_path__ = 'path'

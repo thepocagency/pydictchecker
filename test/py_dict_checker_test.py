@@ -1,3 +1,5 @@
+# coding=utf-8
+
 import unittest
 import pydictchecker.config.global_config as config
 from pydictchecker.py_dict_checker import PyDictChecker
@@ -105,7 +107,7 @@ class PyDictCheckerTest(unittest.TestCase):
                 {
                     'id': 1,
                     'real_name': {
-                        'firstname': 'Jean - Philippe Léo',
+                        'firstname': "Jean - Philippe Léo",
                         'lastname': 'Smet'
                     },
                     'artist_name' : {
@@ -131,70 +133,64 @@ class PyDictCheckerTest(unittest.TestCase):
         }
 
         # We want to check if the last artist has at one album
-        _is_valid, _output_value = PyDictChecker.check(music_library, [
-            {
-                config.__key_path__: 'artists->:last:->albums->:first:'
-            }
-        ])
+        _output = PyDictChecker.check(music_library, {
+            config.__key_path__: 'artists->:last:->albums->:first:'
+        })
 
-        self.assertTrue(_is_valid)
-        self.assertIsNotNone(_output_value)
+        self.assertTrue(_output[config.__default_result_is_valid__])
+        self.assertIsNotNone(_output[config.__default_result_output__])
 
         # If you want to check if:
         # - the first artist exists;
         # - and his real lastname is 'Smet';
         # - and his third album was published after 1960.
-        _is_valid, _output_value = PyDictChecker.check(music_library, [
-            {
-                config.__key_path__: 'artists->:first:',
-                config.__key_conditions__: [
-                    {
-                        config.__key_path__: 'real_name->lastname',
-                        config.__key_comparator__: '==',
-                        config.__key_comparative_value__: 'Smet',
-                        config.__key_cast_to__: None,
-                        config.__key_output__: True
-                    },
-                    {
-                        config.__key_path__: 'albums->:pos:2->year',
-                        config.__key_comparator__: '>',
-                        config.__key_comparative_value__: 1960,
-                        config.__key_cast_to__: config.__key_cast_to_int__
-                    }
-                ]
-            }
-        ])
+        _output = PyDictChecker.check(music_library, {
+            config.__key_path__: 'artists->:first:',
+            config.__key_conditions__: [
+                {
+                    config.__key_path__: 'real_name->lastname',
+                    config.__key_comparator__: '==',
+                    config.__key_comparative_value__: 'Smet',
+                    config.__key_cast_to__: None,
+                    config.__key_output__: True
+                },
+                {
+                    config.__key_path__: 'albums->:pos:2->year',
+                    config.__key_comparator__: '>',
+                    config.__key_comparative_value__: 1960,
+                    config.__key_cast_to__: config.__key_cast_to_int__
+                }
+            ]
+        })
 
-        self.assertTrue(_is_valid)
-        self.assertEqual(_output_value, 'Smet')
+        self.assertTrue(_output[config.__default_result_is_valid__])
+        self.assertEqual(_output[config.__default_result_output__], 'Smet')
 
         # We want to get a false validation:
         # 1. the first artist
         # 2. if his real lastname is 'Smet'
         # 3. and his LAST album was published BEFORE 1960
-        _is_valid, _output_value = PyDictChecker.check(music_library, [
-            {
-                config.__key_path__: 'artists->:first:',
-                config.__key_conditions__: [
-                    {
-                        config.__key_path__: 'real_name->lastname',
-                        config.__key_comparator__: '==',
-                        config.__key_comparative_value__: 'Smet',
-                        config.__key_cast_to__: None
-                    },
-                    {
-                        config.__key_path__: 'albums->:last:->year',
-                        config.__key_comparator__: '<',
-                        config.__key_comparative_value__: 1960,
-                        config.__key_cast_to__: config.__key_cast_to_int__,
-                        config.__key_output__: True
-                    }
-                ]
-            }
-        ])
+        _output = PyDictChecker.check(music_library, {
+            config.__key_path__: 'artists->:first:',
+            config.__key_conditions__: [
+                {
+                    config.__key_path__: 'real_name->lastname',
+                    config.__key_comparator__: '==',
+                    config.__key_comparative_value__: 'Smet',
+                    config.__key_cast_to__: None
+                },
+                {
+                    config.__key_path__: 'albums->:last:->year',
+                    config.__key_comparator__: '<',
+                    config.__key_comparative_value__: 1960,
+                    config.__key_cast_to__: config.__key_cast_to_int__,
+                    config.__key_output__: True
+                }
+            ]
+        })
 
-        self.assertFalse(_is_valid)
-        self.assertEqual(_output_value, 1962)
+        self.assertFalse(_output[config.__default_result_is_valid__])
+        self.assertEqual(_output[config.__default_result_output__], 1962)
 
 if __name__ == '__main__':
     unittest.main()
